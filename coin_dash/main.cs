@@ -53,8 +53,11 @@ public partial class main : Node
 		}
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		if (playing && GetTree().GetNodesInGroup("coins").Count == 0)
+		{
+			
+		}
 	}
 }
