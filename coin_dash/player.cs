@@ -7,7 +7,7 @@ public partial class player : Area2D
 	public float speed= 350;
 
 	[Signal]
-	public delegate void PicupEventHandler();
+	public delegate void PickupEventHandler();
 
 	[Signal]
 	public delegate void HurtEventHandler();
@@ -15,7 +15,7 @@ public partial class player : Area2D
 	
 	
 	private Vector2 velocity = Vector2.Zero;
-	private Vector2 screenSize = new Vector2(480, 720);
+	public Vector2 screenSize = new Vector2(480, 720);
 	
 	public AnimatedSprite2D HeroAni2D => GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 	// Called when the node enters the scene tree for the first time.
@@ -80,7 +80,21 @@ public partial class player : Area2D
 	
 	private void _on_area_entered(Area2D area)
 	{
-		//todo : 작업예정
+		//todo : 완성후  수정 예정 패턴매칭으로 바꿀것 
+		if (area.IsInGroup("coins"))
+		{
+			var coinValue = area as coin;
+			_ = coinValue ?? throw new Exception("wtf");
+			coinValue.Pickup();
+			EmitSignal(SignalName.Pickup);
+		}
+
+		if (area.IsInGroup("obstacles"))
+		{
+			EmitSignal(SignalName.Hurt);
+			Die();
+		}
+		
 	}
 
 }
