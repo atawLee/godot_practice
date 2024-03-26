@@ -48,7 +48,7 @@ public partial class hud : CanvasLayer
 		EmitSignal(SignalName.StartGame);
 	}
 
-	private async Task ShowGameOver()
+	public async Task ShowGameOver()
 	{
 		var timer = GetNode<Timer>("Timer");
 		ShowMessage("Game Over");
