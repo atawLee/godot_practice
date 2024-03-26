@@ -1,12 +1,12 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class main : Node
 {
 	// Called when the node enters the scene tree for the first time.
 
-	[Export]
-	public PackedScene coin_scene;
+	[Export] public PackedScene coin_scene;
 
 	[Export] public int playtime = 30;
 
@@ -23,7 +23,7 @@ public partial class main : Node
 		this.player = GetNode<player>("Player");
 		player.screenSize = screenSize;
 		player.Hide();
-		NewGame();
+		
 	}
 
 	public void NewGame()
@@ -36,12 +36,15 @@ public partial class main : Node
 		player.Show();
 		var timer = GetNode<Timer>("GameTimer");
 		timer.Start();
+		var tempHud = this.GetNode<hud>("HUD");
+		tempHud.UpdateScore(score);
+		tempHud.UpdateTime(time_left);
 		SpawnCoins();
 	}
 
 	private void SpawnCoins()
 	{
-		for (int i = 0; i < level + 4;i++)
+		for (int i = 0; i < level + 4; i++)
 		{
 			var c = coin_scene.Instantiate() as coin;
 			AddChild(c);
@@ -57,7 +60,43 @@ public partial class main : Node
 	{
 		if (playing && GetTree().GetNodesInGroup("coins").Count == 0)
 		{
-			
+			level += 1;
+			time_left += 5;
+			SpawnCoins();
 		}
+	}
+
+	private async void _on_game_timer_timeout()
+	{
+		time_left -= 1;
+		GetNode<hud>("HUD").UpdateTime(time_left);
+		if (time_left <= 0)
+			await GameOver();
+	}
+
+	private async Task GameOver()
+	{
+		playing = false;
+		GetNode<Timer>("GameTimer").Stop();
+		
+		GetTree().CallGroup("coins","queue_free");
+		await GetNode<hud>("HUD").ShowGameOver();
+		GetNode<player>("Player").Die();
+	}
+
+	private async void _on_player_hurt()
+	{
+		await GameOver();
+	}
+
+	private void _on_player_pickup()
+	{
+		score += 1;
+		GetNode<hud>("HUD").UpdateScore(score);
+	}
+	
+	private void _on_hud_start_game()
+	{
+		NewGame();
 	}
 }

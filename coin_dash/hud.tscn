@@ -66,3 +66,4 @@ theme_override_font_sizes/font_size = 42
 text = "Start"
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
