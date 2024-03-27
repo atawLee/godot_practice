@@ -88,6 +88,8 @@ public partial class player : Area2D
 			await coinValue.Pickup();
 			EmitSignal(SignalName.Pickup);
 		}
+		
+		//todo 51 page 진행 예정 
 
 		if (area.IsInGroup("obstacles"))
 		{

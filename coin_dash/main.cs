@@ -10,6 +10,8 @@ public partial class main : Node
 
 	[Export] public int playtime = 30;
 
+	[Export] public PackedScene powerup_scene;
+
 	private int level = 1;
 	private int score = 0;
 	private int time_left = 0;
@@ -23,7 +25,7 @@ public partial class main : Node
 		this.player = GetNode<player>("Player");
 		player.screenSize = screenSize;
 		player.Hide();
-		
+
 	}
 
 	public void NewGame()
@@ -52,6 +54,7 @@ public partial class main : Node
 			c.scrrenSize = screenSize;
 			c.Position = new Vector2(rand.Next(0, (int)screenSize.X), rand.Next(0, (int)screenSize.Y));
 		}
+
 		GetNode<AudioStreamPlayer>("LevelSound").Play();
 	}
 
@@ -62,6 +65,9 @@ public partial class main : Node
 			level += 1;
 			time_left += 5;
 			SpawnCoins();
+			var powerTimer = GetNode<Timer>("PowerTimer");
+			powerTimer.WaitTime = new Random(DateTime.Now.Millisecond).Next(5, 10);
+			powerTimer.Start();
 		}
 	}
 
@@ -77,8 +83,8 @@ public partial class main : Node
 	{
 		playing = false;
 		GetNode<Timer>("GameTimer").Stop();
-		
-		GetTree().CallGroup("coins","queue_free");
+
+		GetTree().CallGroup("coins", "queue_free");
 		await GetNode<hud>("HUD").ShowGameOver();
 		GetNode<player>("Player").Die();
 
@@ -96,9 +102,21 @@ public partial class main : Node
 		GetNode<hud>("HUD").UpdateScore(score);
 		GetNode<AudioStreamPlayer>("CoinSound").Play();
 	}
-	
+
 	private void _on_hud_start_game()
 	{
 		NewGame();
 	}
+
+	private void _on_power_timer_timeout()
+	{
+		var rand = new Random(DateTime.Now.Millisecond);
+		var p = powerup_scene.Instantiate() as powerup;
+		AddChild(p);
+		p.scrrenSize = screenSize;
+		p.Position = new Vector2(rand.Next(0, (int)screenSize.X), rand.Next(0, (int)screenSize.Y));
+	}
 }
+
+
+
