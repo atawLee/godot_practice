@@ -44,15 +44,13 @@ public partial class main : Node
 
 	private void SpawnCoins()
 	{
+		var rand = new Random(DateTime.Now.Millisecond);
 		for (int i = 0; i < level + 4; i++)
 		{
 			var c = coin_scene.Instantiate() as coin;
 			AddChild(c);
 			c.scrrenSize = screenSize;
-			var rand = new Random(DateTime.Now.Millisecond);
 			c.Position = new Vector2(rand.Next(0, (int)screenSize.X), rand.Next(0, (int)screenSize.Y));
-
-
 		}
 	}
 

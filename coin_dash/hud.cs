@@ -24,7 +24,7 @@ public partial class hud : CanvasLayer
 
 	public void UpdateTime(int value)
 	{
-		GetNode<Label>("MarginContainer/Time").Text = value.ToString();
+		GetNode<Label>("MarginContainer/Timer").Text = value.ToString();
 	}
 
 	public void ShowMessage(string text)
