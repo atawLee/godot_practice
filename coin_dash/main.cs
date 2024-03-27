@@ -52,6 +52,7 @@ public partial class main : Node
 			c.scrrenSize = screenSize;
 			c.Position = new Vector2(rand.Next(0, (int)screenSize.X), rand.Next(0, (int)screenSize.Y));
 		}
+		GetNode<AudioStreamPlayer>("LevelSound").Play();
 	}
 
 	public override void _Process(double delta)
@@ -80,6 +81,8 @@ public partial class main : Node
 		GetTree().CallGroup("coins","queue_free");
 		await GetNode<hud>("HUD").ShowGameOver();
 		GetNode<player>("Player").Die();
+
+		GetNode<AudioStreamPlayer>("EndSound").Play();
 	}
 
 	private async void _on_player_hurt()
@@ -91,6 +94,7 @@ public partial class main : Node
 	{
 		score += 1;
 		GetNode<hud>("HUD").UpdateScore(score);
+		GetNode<AudioStreamPlayer>("CoinSound").Play();
 	}
 	
 	private void _on_hud_start_game()

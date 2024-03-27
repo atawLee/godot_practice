@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://c32h8mgk2opyi"]
+[gd_scene load_steps=9 format=3 uid="uid://c32h8mgk2opyi"]
 
 [ext_resource type="Script" path="res://main.cs" id="1_dbs44"]
 [ext_resource type="PackedScene" uid="uid://bhqr25a6dmoi2" path="res://player.tscn" id="1_eynxo"]
 [ext_resource type="Texture2D" uid="uid://clkqvisroogos" path="res://assets/grass.png" id="1_rcvdj"]
 [ext_resource type="PackedScene" uid="uid://cafe7dungt8p2" path="res://coin.tscn" id="2_dadnf"]
 [ext_resource type="PackedScene" uid="uid://6l5y7d1fjp4i" path="res://hud.tscn" id="3_v067w"]
+[ext_resource type="AudioStream" uid="uid://ce3277ixcyirc" path="res://assets/audio/Coin.wav" id="6_ow8ca"]
+[ext_resource type="AudioStream" uid="uid://b1culhqo1u2pt" path="res://assets/audio/Level.wav" id="7_na4o6"]
+[ext_resource type="AudioStream" uid="uid://c3nmnsyhlag2c" path="res://assets/audio/EndSound.wav" id="8_1ddo6"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_dbs44")
@@ -20,10 +23,20 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_rcvdj")
 stretch_mode = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Player" parent="." instance=ExtResource("1_eynxo")]
 
 [node name="GameTimer" type="Timer" parent="."]
+
+[node name="CoinSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_ow8ca")
+
+[node name="LevelSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_na4o6")
+
+[node name="EndSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_1ddo6")
 
 [connection signal="StartGame" from="HUD" to="." method="_on_hud_start_game"]
 [connection signal="Hurt" from="Player" to="." method="_on_player_hurt"]
