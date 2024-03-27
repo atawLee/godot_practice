@@ -78,14 +78,14 @@ public partial class player : Area2D
 		SetProcess(false);
 	}
 	
-	private void _on_area_entered(Area2D area)
+	private async void _on_area_entered(Area2D area)
 	{
 		//todo : 완성후  수정 예정 패턴매칭으로 바꿀것 
 		if (area.IsInGroup("coins"))
 		{
 			var coinValue = area as coin;
 			_ = coinValue ?? throw new Exception("wtf");
-			coinValue.Pickup();
+			await coinValue.Pickup();
 			EmitSignal(SignalName.Pickup);
 		}
 
