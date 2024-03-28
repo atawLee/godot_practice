@@ -111,6 +111,7 @@ public partial class main : Node
 	private void _on_power_timer_timeout()
 	{
 		var rand = new Random(DateTime.Now.Millisecond);
+		//todo : error 발생 위치 
 		var p = powerup_scene.Instantiate() as powerup;
 		AddChild(p);
 		p.scrrenSize = screenSize;
