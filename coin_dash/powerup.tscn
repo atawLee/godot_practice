@@ -56,13 +56,12 @@ radius = 20.025
 [node name="PowerUp" type="Area2D" groups=["powerups"]]
 position = Vector2(70, 17)
 script = ExtResource("1_5j6om")
-metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_vaeyw")
 autoplay = "default"
-frame_progress = 0.323931
+frame_progress = 0.0229888
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_be0xn")
