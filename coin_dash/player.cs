@@ -7,13 +7,11 @@ public partial class player : Area2D
 	public float speed= 350;
 
 	[Signal]
-	public delegate void PickupEventHandler();
+	public delegate void PickupEventHandler(string type);
 
 	[Signal]
 	public delegate void HurtEventHandler();
 
-	
-	
 	private Vector2 velocity = Vector2.Zero;
 	public Vector2 screenSize = new Vector2(480, 720);
 	
@@ -84,12 +82,18 @@ public partial class player : Area2D
 		if (area.IsInGroup("coins"))
 		{
 			var coinValue = area as coin;
-			_ = coinValue ?? throw new Exception("wtf");
+			_ = coinValue ?? throw new Exception("Not found Coin ");
 			await coinValue.Pickup();
-			EmitSignal(SignalName.Pickup);
+			EmitSignal(SignalName.Pickup,"coin");
 		}
-		
-		//todo 51 page 진행 예정 
+
+		if (area.IsInGroup("powerups"))
+		{
+			var powerupTemp = area as powerup;
+			_ = powerupTemp ?? throw new Exception("Not found Powerups");
+			await powerupTemp.Pickup();
+			EmitSignal(SignalName.Pickup,"powerup");
+		}
 
 		if (area.IsInGroup("obstacles"))
 		{

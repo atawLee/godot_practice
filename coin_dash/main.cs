@@ -96,7 +96,7 @@ public partial class main : Node
 		await GameOver();
 	}
 
-	private void _on_player_pickup()
+	private void _on_player_pickup(string type)
 	{
 		score += 1;
 		GetNode<hud>("HUD").UpdateScore(score);
@@ -117,6 +117,9 @@ public partial class main : Node
 		p.Position = new Vector2(rand.Next(0, (int)screenSize.X), rand.Next(0, (int)screenSize.Y));
 	}
 }
+
+
+
 
 
 
