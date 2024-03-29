@@ -1,10 +1,11 @@
-## Signal 
+## [Signal] 
 외부에서 지정할수 있게 열어주는 이벤트 
+C# 에서는 delegate에 PickupEventHandler라는 명칭으로 만들고 [Signal] 애트리뷰트를 붙여주면 Pickup 이라는 시그널이 코드제네레이션에 의해서 자동으로 생성됩니다.
 
-## Export 
+## [Export]
 godot editor에서 접근가능하도록 열어주는 멤버 항목
 </br>
-편하게 다른 씬을 끌어다 쓸수 있음.
+godot editor에서 해당 멤버에 대한 값을 편집 가능해지고, 다른 씬을 대입해놓고 인스턴스로 생성하는 등으로 연계하여 사용할 수 있습니다.
 
 ## GetNode<T>("selector")
 C#의 셀렉터 gdscript에서는 $selector 형식으로 자식노드를 선택할수 있지만
