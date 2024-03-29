@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 public partial class coin : Area2D
 {
 	public Vector2 scrrenSize = Vector2.Zero;
+
 	public async Task Pickup()
 	{
 		GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", true);
@@ -15,22 +16,32 @@ public partial class coin : Area2D
 		await ToSignal(tw, "finished");
 		QueueFree();
 	}
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		Random rand = new Random((int)DateTime.Now.Ticks);
-		GetNode<Timer>("Timer").Start(rand.Next(3,8));
+		GetNode<Timer>("Timer").Start(rand.Next(3, 8));
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 	}
-	
+
 	private void _on_timer_timeout()
 	{
 		var ani = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		ani.Frame = 0;
 		ani.Play();
+	}
+
+	private void _on_area_entered(Area2D area)
+	{
+		Random rand = new Random((int)DateTime.Now.Ticks);
+		if (area.IsInGroup("obstacles"))
+		{
+			this.Position = new Vector2(rand.Next(0, (int)scrrenSize.X), rand.Next(0, (int)scrrenSize.Y));
+		}
 	}
 }
