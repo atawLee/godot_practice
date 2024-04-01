@@ -9,12 +9,15 @@ public partial class Player : RigidBody2D
 	
 	public PlayerState CurrentState = PlayerState.Init;
 
+	public Vector2 ScreenSize { get; set; }
+
 	private Vector2 _thrust = Vector2.Zero;
 	private float _rotationDir = 0;
 	private CollisionShape2D PlayerShape2d => GetNode<CollisionShape2D>("CollisionShape2D"); 
 	public override void _Ready()
 	{
 		ChangeState(PlayerState.Alive);
+		this.ScreenSize = GetViewportRect().Size;
 	}
 
 	public override void _Process(double delta)
@@ -62,5 +65,28 @@ public partial class Player : RigidBody2D
 		//base._PhysicsProcess(delta);
 		ConstantForce = _thrust;
 		ConstantTorque = _rotationDir * SpinPower;
+	}
+
+	public override void _IntegrateForces(PhysicsDirectBodyState2D state)
+	{
+		//base._IntegrateForces(state);
+		var xForm = state.Transform;
+		xForm.Origin.X = Wrapf(xForm.Origin.X, 0, ScreenSize.X);
+		xForm.Origin.Y = Wrapf(xForm.Origin.Y, 0, ScreenSize.Y);
+		state.Transform = xForm;
+	}
+	
+	public float Wrapf(float value, float min, float max)
+	{
+		float range = max - min;
+		while (value < min)
+		{
+			value += range;
+		}
+		while (value >= max)
+		{
+			value -= range;
+		}
+		return value;
 	}
 }
