@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Diagnostics;
 
 namespace space_rock.Player;  
 public partial class Player : RigidBody2D
@@ -9,6 +10,12 @@ public partial class Player : RigidBody2D
 	
 	public PlayerState CurrentState = PlayerState.Init;
 
+	[Export] public PackedScene BulletPackedScene { get; set; }
+
+
+	[Export] public float FireRate = 0.25f;
+
+	private bool _canShoot = true;
 	public Vector2 ScreenSize { get; set; }
 
 	private Vector2 _thrust = Vector2.Zero;
@@ -18,6 +25,7 @@ public partial class Player : RigidBody2D
 	{
 		ChangeState(PlayerState.Alive);
 		this.ScreenSize = GetViewportRect().Size;
+		GetNode<Timer>("GunCoolDown").WaitTime = FireRate;
 	}
 
 	public override void _Process(double delta)
@@ -57,7 +65,25 @@ public partial class Player : RigidBody2D
 			_thrust = Transform.X * EnginePower;
 		}
 
+		if (Input.IsActionPressed("shoot") && _canShoot)
+			Shoot();
+
 		_rotationDir = Input.GetAxis(new StringName("rotation_left"), new StringName("rotation_right"));
+	}
+
+	private void Shoot()
+	{
+		if (this.CurrentState == PlayerState.Invalulnerable)
+		{
+			return;
+		}
+
+		_canShoot = false;
+		GetNode<Timer>("GunCoolDown").Start();
+		var b = BulletPackedScene.Instantiate() as Bullet;
+		Debug.Assert(b != null,"Bullet NotFound");
+		GetTree().Root.AddChild(b);
+		b.Start(GetNode<Marker2D>("Muzzle").GlobalTransform);
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -89,4 +115,12 @@ public partial class Player : RigidBody2D
 		}
 		return value;
 	}
+	
+	private void _on_gun_cool_down_timeout()
+	{
+		_canShoot = true;
+	}
 }
+
+
+
