@@ -30,7 +30,7 @@ public partial class Main : Node
 		if (velocity == null)
 		{
 			velocity = Vector2.Right.Rotated((float)RandomUtils.RandfRange(0, (float)Math.Tau) *
-			                                 (float)RandomUtils.RandfRange(50, 125));
+											 (float)RandomUtils.RandfRange(50, 125));
 		}
 
 		var r = RockScene.Instantiate() as Rock;

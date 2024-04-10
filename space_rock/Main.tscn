@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bfknvcy1c1hrb"]
+[gd_scene load_steps=6 format=3 uid="uid://bfknvcy1c1hrb"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1_fdud0"]
 [ext_resource type="PackedScene" uid="uid://d21k6y4n8cp0g" path="res://Player/player.tscn" id="1_k0evp"]
 [ext_resource type="Texture2D" uid="uid://c1sukia6s6faq" path="res://assets/space_background.png" id="1_nc7oh"]
+[ext_resource type="PackedScene" uid="uid://imrcd5xqaq6c" path="res://Rock/Rock.tscn" id="2_m26fl"]
 
 [sub_resource type="Curve2D" id="Curve2D_amrhs"]
 _data = {
@@ -12,6 +13,7 @@ point_count = 5
 
 [node name="Main" type="Node"]
 script = ExtResource("1_fdud0")
+RockScene = ExtResource("2_m26fl")
 
 [node name="Background" type="Sprite2D" parent="."]
 texture = ExtResource("1_nc7oh")
