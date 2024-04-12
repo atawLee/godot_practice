@@ -11,7 +11,7 @@ _data = {
 }
 point_count = 5
 
-[node name="Main" type="Node"]
+[node name="Main" type="Node" groups=["rocks"]]
 script = ExtResource("1_fdud0")
 RockScene = ExtResource("2_m26fl")
 
