@@ -1,20 +1,31 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class Rock : RigidBody2D
 {
 	// Called when the node enters the scene tree for the first time.
 
+	[Signal]
+	public delegate void ExplodedEventHandler(float size, float radius, Vector2 position, Vector2 linearVelocity);
+	
 	public Vector2 ScreenSize { get; set; } = Vector2.Zero;
 	private float _size;
 	private float _radius;
 	private float _scale_factor = 0.2f;
+
+	private TaskCompletionSource<bool> _tcs; //완료 확인을 위한 tcs 
+
 	
 	public override void _Ready()
 	{
+		var animationPlayer = GetNode<AnimationPlayer>("Explosion/AnimationPlayer");
+	
+		var callable = new Callable(this, nameof(OnAnimationFinished));
+		animationPlayer.Connect("animation_finished", callable);
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	
 	public override void _Process(double delta)
 	{
 	}
@@ -32,6 +43,8 @@ public partial class Rock : RigidBody2D
 		GetNode<CollisionShape2D>("CollisionShape2D").Shape = shape;
 		LinearVelocity = velocity;
 		AngularVelocity = RandomUtils.RandfRange((float)-Math.PI, (float)Math.PI);
+
+		GetNode<Sprite2D>("Explosion").Scale = Vector2.One * 0.75f * this._size;
 
 	}
 
@@ -56,4 +69,22 @@ public partial class Rock : RigidBody2D
 		}
 		return value;
 	}
+
+	public void Explode()
+	{
+		GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled",true);
+		GetNode<Sprite2D>("Sprite2D").Hide();
+		GetNode<AnimationPlayer>("Explosion/AnimationPlayer").Play("explosion");
+		GetNode<Sprite2D>("Explosion").Show();
+
+		EmitSignal(SignalName.Exploded, this._size, _radius, Position, LinearVelocity);
+
+		this.LinearVelocity = Vector2.Zero;
+		AngularVelocity = 0;
+	}
+	private void OnAnimationFinished(string animName)
+	{
+		QueueFree();
+	}
+	
 }
