@@ -1,6 +1,16 @@
 ## [Signal] 
 외부에서 지정할수 있게 열어주는 이벤트 
 C# 에서는 delegate에 PickupEventHandler라는 명칭으로 만들고 [Signal] 애트리뷰트를 붙여주면 Pickup 이라는 시그널이 코드제네레이션에 의해서 자동으로 생성됩니다.
+</br>
+상위씬에서 하위씬의 시그널을 받으려면 코드에서 직접 Singal을 Connect로 연결할 필요가 있습니다.
+```C#
+var animationPlayer = GetNode<AnimationPlayer>("Explosion/AnimationPlayer");
+var callable = new Callable(this, nameof(OnAnimationFinished));
+animationPlayer.Connect("animation_finished", callable);
+```
+위 코드는 스페이스락 rock.cs의 일부분인데, 애니메이션 이후 queuefree를 호출하도록 되어있지만, animationPlayer는 하위씬의 자식노드로 지정되어있기때문에 에디터를 이용해서, 
+rock.tscn에서는 시그널에 연결 할수 없으므로, 따라서 위와같이 레디에서 커넥트를 통해서 animation_finished이벤트에 연결해서 사용하는 방식으로 넣었습니다.
+
 
 ## [Export]
 godot editor에서 접근가능하도록 열어주는 멤버 항목
