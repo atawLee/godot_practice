@@ -31,8 +31,8 @@ public partial class Bullet : Area2D
 	{
 		if (body.IsInGroup("rocks"))
 		{
-			//todo : 추후 rock그룹에 추가하고 explode추가 
-			//body.Explode();
+			var rock = body as Rock;
+			rock?.Explode();
 			QueueFree();
 		}
 	}

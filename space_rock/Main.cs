@@ -18,7 +18,7 @@ public partial class Main : Node
 		}
 	}
 
-	private void SpawnRock(int size , Vector2? position = null, Vector2? velocity =null)
+	private void SpawnRock(float size , Vector2? position = null, Vector2? velocity =null)
 	{
 		if (position == null)
 		{
@@ -36,7 +36,24 @@ public partial class Main : Node
 		var r = RockScene.Instantiate() as Rock;
 		r.ScreenSize = this.ScreenSize;
 		r.Start((Vector2)position,(Vector2)velocity,size);
-		CallDeferred("add_child", r);
+		
+		r.Exploded += OnRockExploded;
+	}
+
+	private void OnRockExploded(float size, float radius, Vector2 position, Vector2 linearvelocity)
+	{
+		if (size <= 1)
+		{
+			return;
+		}
+
+		for (int offset = -1; offset <= 1; offset ++)
+		{
+			var dir = GetNode<RigidBody2D>("Player").Position.DirectionTo(position).Orthogonal() * offset;
+			var newpos = position = dir * radius;
+			var newvel = dir * linearvelocity.Length() * 1.1f;
+			SpawnRock(size - 1f, newpos, newvel);
+		}
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
