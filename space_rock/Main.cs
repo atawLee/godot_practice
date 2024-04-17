@@ -47,7 +47,9 @@ public partial class Main : Node
 			return;
 		}
 
-		for (int offset = -1; offset <= 1; offset ++)
+		int[] offsets = { -1, 1 };
+
+		foreach(int offset in offsets)
 		{
 			var dir = GetNode<RigidBody2D>("Player").Position.DirectionTo(position).Orthogonal() * offset;
 			var newpos = position = dir * radius;
