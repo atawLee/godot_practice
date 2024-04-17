@@ -42,7 +42,9 @@ public partial class Rock : RigidBody2D
 		shape.Radius = _radius;
 		GetNode<CollisionShape2D>("CollisionShape2D").Shape = shape;
 		LinearVelocity = velocity;
-		AngularVelocity = RandomUtils.RandfRange((float)-Math.PI, (float)Math.PI);
+		AngularVelocity = (float)GD.RandRange(-Math.PI,Math.PI);
+
+		
 
 		GetNode<Sprite2D>("Explosion").Scale = Vector2.One * 0.75f * this._size;
 
@@ -51,25 +53,11 @@ public partial class Rock : RigidBody2D
 	public override void _IntegrateForces(PhysicsDirectBodyState2D state)
 	{
 		var xForm = state.Transform;
-		xForm.Origin.X = Wrapf(xForm.Origin.X, 0 - _radius, ScreenSize.X + _radius);
-		xForm.Origin.Y = Wrapf(xForm.Origin.Y, 0 - _radius, ScreenSize.Y + _radius);
+		xForm.Origin.X = Mathf.Wrap(xForm.Origin.X, 0 - _radius, ScreenSize.X + _radius);
+		xForm.Origin.Y =Mathf.Wrap(xForm.Origin.Y, 0 - _radius, ScreenSize.Y + _radius);
 		state.Transform = xForm;
 	}
 	
-	public float Wrapf(float value, float min, float max)
-	{
-		float range = max - min;
-		while (value < min)
-		{
-			value += range;
-		}
-		while (value >= max)
-		{
-			value -= range;
-		}
-		return value;
-	}
-
 	public void Explode()
 	{
 		GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled",true);
