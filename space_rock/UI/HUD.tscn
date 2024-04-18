@@ -1,8 +1,16 @@
-[gd_scene format=3 uid="uid://bb61x7u46hs3k"]
+[gd_scene load_steps=4 format=3 uid="uid://bb61x7u46hs3k"]
+
+[ext_resource type="FontFile" uid="uid://cg8kr11cqrt5s" path="res://assets/kenvector_future_thin.ttf" id="1_q3cuy"]
+[ext_resource type="Texture2D" uid="uid://de8w1i6h36eun" path="res://assets/player_small.png" id="2_ubjy2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_te8i5"]
+font = ExtResource("1_q3cuy")
+font_size = 64
 
 [node name="HUD" type="CanvasLayer"]
 
 [node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
 one_shot = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -13,3 +21,22 @@ theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="ScoreLabel" type="Label" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0"
+label_settings = SubResource("LabelSettings_te8i5")
+
+[node name="LiveCounter" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_constants/separation = 20
+
+[node name="L1" type="TextureRect" parent="MarginContainer/HBoxContainer/LiveCounter"]
+layout_mode = 2
+texture = ExtResource("2_ubjy2")
+stretch_mode = 5
