@@ -11,6 +11,7 @@ public partial class Main : Node
 	
 	public override void _Ready()
 	{
+		
 		this.ScreenSize = GetViewport().GetVisibleRect().Size;
 		for (int i = 0; i < 3; i++)
 		{
@@ -52,6 +53,7 @@ public partial class Main : Node
 
 		foreach(int offset in offsets)
 		{
+			
 			var dir = GetNode<RigidBody2D>("Player").Position.DirectionTo(position).Orthogonal() * offset;
 			var newpos = position + dir * radius;
 			var newvel = dir * linearvelocity.Length() * 1.1f;
