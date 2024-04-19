@@ -1,12 +1,18 @@
 using Godot;
 using System;
+using System.Web;
+using space_rock.Player;
 
 public partial class Main : Node
 {
 	[Export]
 	public PackedScene RockScene { get; set; }
 
-	public Vector2 ScreenSize { get; set; } = Vector2.Zero; 
+	public Vector2 ScreenSize { get; set; } = Vector2.Zero;
+
+	private int _level = 0;
+	private int _score = 0;
+	private bool isPlaying = false;
 	
 	
 	public override void _Ready()
@@ -17,6 +23,15 @@ public partial class Main : Node
 		{
 			SpawnRock(3);
 		}
+		
+		
+	}
+
+	private void OnPlaying()
+	{
+		isPlaying = true;
+		var timer = GetNode<Timer>("HUD/Timer");
+		timer.Timeout -= OnPlaying; 
 	}
 
 	private void SpawnRock(float size , Vector2? position = null, Vector2? velocity =null)
@@ -53,16 +68,50 @@ public partial class Main : Node
 
 		foreach(int offset in offsets)
 		{
-			
 			var dir = GetNode<RigidBody2D>("Player").Position.DirectionTo(position).Orthogonal() * offset;
 			var newpos = position + dir * radius;
 			var newvel = dir * linearvelocity.Length() * 1.1f;
 			SpawnRock(size - 1f, newpos, newvel);
 		}
+
+		_score += (int)(10 * size);
+	}
+
+	public void NewLevel()
+	{
+		_level += 1;
+		GetNode<HUD>("HUD").ShowMessage($"Wave {_level}");
+		for (int i = 0; i < _level; i++)
+		{
+			SpawnRock(3);
+		}
+	}
+
+	public void NewGame()
+	{
+		GetTree().CallGroup("rocks","quque_free");
+		_level = 0;
+		_score = 0;
+		var hud = GetNode<HUD>("HUD");
+		hud.UpdateScore(_score);
+		
+		var timer = GetNode<Timer>("HUD/Timer");
+		timer.Timeout += OnPlaying;
+		hud.ShowMessage("Get Ready");
+		GetNode<Player>("Player").Reset();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		if (!isPlaying)
+		{
+			return;
+		}
+
+		if (GetTree().GetNodesInGroup("rocks").Count == 0)
+		{
+			NewLevel();
+		}
 	}
 }
