@@ -120,6 +120,11 @@ public partial class Player : RigidBody2D
 	{
 		_canShoot = true;
 	}
+
+	public void Reset()
+	{
+		
+	}
 }
 
 
