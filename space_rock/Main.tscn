@@ -29,3 +29,5 @@ curve = SubResource("Curve2D_tmm6p")
 position = Vector2(16, 8)
 
 [node name="HUD" parent="." instance=ExtResource("5_yctsm")]
+
+[connection signal="Start" from="HUD" to="." method="NewGame"]

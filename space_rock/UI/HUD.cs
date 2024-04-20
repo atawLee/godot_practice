@@ -52,6 +52,8 @@ public partial class HUD : CanvasLayer
 	{
 		isGameOver = true;
 		ShowMessage("Game Over");
+		
+		
 	}
 	
 	private void _on_timer_timeout()
@@ -71,6 +73,8 @@ public partial class HUD : CanvasLayer
 		StartButton.Hide();
 		EmitSignal(SignalName.Start);
 	}
+	
+	
 
 }
 

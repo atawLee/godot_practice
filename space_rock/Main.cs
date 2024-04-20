@@ -5,6 +5,8 @@ using space_rock.Player;
 
 public partial class Main : Node
 {
+	
+	
 	[Export]
 	public PackedScene RockScene { get; set; }
 
@@ -114,4 +116,12 @@ public partial class Main : Node
 			NewLevel();
 		}
 	}
+
+	public void GameOver()
+	{
+		isPlaying = false;
+		GetNode<HUD>("HUD").GameOver();
+	}
 }
+
+
