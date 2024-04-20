@@ -23,6 +23,7 @@ window/size/viewport_height=1080
 [dotnet]
 
 project/assembly_name="space_rock"
+project/solution_directory="/Users/leejonghoon/godot_project/godot_practice/space_rock"
 
 [input]
 

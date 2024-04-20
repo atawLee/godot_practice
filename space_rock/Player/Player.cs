@@ -119,6 +119,7 @@ public partial class Player : RigidBody2D
 	private void _on_gun_cool_down_timeout()
 	{
 		_canShoot = true;
+		
 	}
 
 	public void Reset()
