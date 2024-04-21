@@ -12,7 +12,6 @@ public partial class Player : RigidBody2D
 
 	[Export] public PackedScene BulletPackedScene { get; set; }
 
-
 	[Export] public float FireRate = 0.25f;
 
 	private bool _canShoot = true;
@@ -20,7 +19,43 @@ public partial class Player : RigidBody2D
 
 	private Vector2 _thrust = Vector2.Zero;
 	private float _rotationDir = 0;
-	private CollisionShape2D PlayerShape2d => GetNode<CollisionShape2D>("CollisionShape2D"); 
+	private CollisionShape2D PlayerShape2d => GetNode<CollisionShape2D>("CollisionShape2D");
+
+	[Signal]
+	public delegate void LivesChangedEventHandler(int value);
+
+	[Signal]
+	public delegate void DeadEventHandler();
+
+	private bool _resetPosition = false;
+
+	private int _lives;
+	public int Lives
+	{
+		get => _lives;
+		set
+		{
+			_lives = value;
+			EmitSignal(SignalName.LivesChanged, _lives);
+
+			if (_lives < 0)
+			{
+				ChangeState(PlayerState.Dead);
+			}
+			else
+			{
+				ChangeState(PlayerState.Invalulnerable);
+			}
+		}
+	}
+
+	public void Reset()
+	{
+		_resetPosition = true;
+		GetNode<Sprite2D>("Sprite2D").Show();
+		Lives = 3;
+		ChangeState(PlayerState.Alive);
+	}
 	public override void _Ready()
 	{
 		ChangeState(PlayerState.Alive);
@@ -100,6 +135,12 @@ public partial class Player : RigidBody2D
 		xForm.Origin.X = Wrapf(xForm.Origin.X, 0, ScreenSize.X);
 		xForm.Origin.Y = Wrapf(xForm.Origin.Y, 0, ScreenSize.Y);
 		state.Transform = xForm;
+
+		if (_resetPosition)
+		{
+			xForm.Origin = ScreenSize / 2; 
+			_resetPosition = false;
+		}
 	}
 	
 	public float Wrapf(float value, float min, float max)
@@ -119,11 +160,6 @@ public partial class Player : RigidBody2D
 	private void _on_gun_cool_down_timeout()
 	{
 		_canShoot = true;
-		
-	}
-
-	public void Reset()
-	{
 		
 	}
 }
