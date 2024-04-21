@@ -122,6 +122,14 @@ public partial class Main : Node
 		isPlaying = false;
 		GetNode<HUD>("HUD").GameOver();
 	}
+	
+	private void UpdateLives(int value)
+	{
+		// Replace with function body.
+	}
 }
+
+
+
 
 
