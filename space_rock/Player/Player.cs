@@ -71,19 +71,29 @@ public partial class Player : RigidBody2D
 	private void ChangeState(PlayerState state)
 	{
 		var player = this.PlayerShape2d;
+		
+		var sprite = GetNode<Sprite2D>("Sprite2D");
+		var modulate = sprite.Modulate;
 		switch (state)
 		{
 			case PlayerState.Init:
 				player.SetDeferred("disabled", true);
+				modulate.A = 0.5f;
 				break;
 			case PlayerState.Alive:
 				player.SetDeferred("disabled", false);
+				modulate.A = 1.0f;
 				break;
 			case PlayerState.Invalulnerable:
 				player.SetDeferred("disabled", true);
+				modulate.A = 0.5f;
+				GetNode<Timer>("InvaulnerablilityTimer").Start();
 				break;
 			case PlayerState.Dead:
 				player.SetDeferred("disabled", true);
+				sprite.Hide();
+				LinearVelocity = Vector2.Zero;
+				EmitSignal(SignalName.Dead);
 				break;
 		}
 		this.CurrentState = state;
@@ -160,9 +170,16 @@ public partial class Player : RigidBody2D
 	private void _on_gun_cool_down_timeout()
 	{
 		_canShoot = true;
-		
+	}
+	
+	private void _on_invaulnerablility_timer_timeout()
+	{
+		ChangeState(PlayerState.Alive);
 	}
 }
+
+
+
 
 
 
