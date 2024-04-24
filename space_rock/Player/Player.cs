@@ -176,7 +176,38 @@ public partial class Player : RigidBody2D
 	{
 		ChangeState(PlayerState.Alive);
 	}
+	
+	private void _on_body_entered(Node body)
+	{
+		if (body.IsInGroup("rocks"))
+		{
+			var rock = body as Rock;
+			rock.Explode();
+			_lives = -1;
+			Explode();
+		}
+	}
+
+	private void Explode()
+	{
+		var explosion = GetNode<Sprite2D>("Explosion");
+		explosion.Show();
+		var ani = GetNode<AnimationPlayer>("Explosion/AnimationPlayer");
+		ani.AnimationFinished += AniOnAnimationFinished;
+		ani.Play("explosion");
+	}
+
+	private void AniOnAnimationFinished(StringName animname)
+	{
+		var ani = GetNode<AnimationPlayer>("Explosion/AnimationPlayer");
+		GetNode<Sprite2D>("Explosion").Hide();
+
+		ani.AnimationFinished -= AniOnAnimationFinished;
+	}
 }
+
+
+
 
 
 

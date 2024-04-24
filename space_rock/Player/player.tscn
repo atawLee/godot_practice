@@ -10,6 +10,8 @@ radius = 34.0
 
 [node name="Player" type="RigidBody2D"]
 position = Vector2(1, 0)
+max_contacts_reported = 1
+contact_monitor = true
 linear_damp = 1.0
 angular_damp = 5.0
 script = ExtResource("1_h8nvv")
