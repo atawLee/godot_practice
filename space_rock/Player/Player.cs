@@ -188,21 +188,15 @@ public partial class Player : RigidBody2D
 		}
 	}
 
-	private void Explode()
+	private async void Explode()
 	{
 		var explosion = GetNode<Sprite2D>("Explosion");
 		explosion.Show();
 		var ani = GetNode<AnimationPlayer>("Explosion/AnimationPlayer");
-		ani.AnimationFinished += AniOnAnimationFinished;
+		//ani.AnimationFinished += AniOnAnimationFinished;
 		ani.Play("explosion");
-	}
-
-	private void AniOnAnimationFinished(StringName animname)
-	{
-		var ani = GetNode<AnimationPlayer>("Explosion/AnimationPlayer");
-		GetNode<Sprite2D>("Explosion").Hide();
-
-		ani.AnimationFinished -= AniOnAnimationFinished;
+		await ToSignal(ani, "animation_finished");
+		explosion.Hide();
 	}
 }
 
