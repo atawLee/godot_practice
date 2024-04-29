@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://c103b5or1xl4m"]
+
+[ext_resource type="Texture2D" uid="uid://beebfko0lf32" path="res://assets/enemy_saucer.png" id="1_acsn5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5lguj"]
+radius = 32.0
+
+[node name="Enemy" type="Area2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_acsn5")
+hframes = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_5lguj")
