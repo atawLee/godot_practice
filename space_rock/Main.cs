@@ -5,8 +5,6 @@ using space_rock.Player;
 
 public partial class Main : Node
 {
-	
-	
 	[Export]
 	public PackedScene RockScene { get; set; }
 
@@ -16,17 +14,13 @@ public partial class Main : Node
 	private int _score = 0;
 	private bool isPlaying = false;
 	
-	
 	public override void _Ready()
 	{
-		
-		this.ScreenSize = GetViewport().GetVisibleRect().Size;
+		ScreenSize = GetViewport().GetVisibleRect().Size;
 		for (int i = 0; i < 3; i++)
 		{
 			SpawnRock(3);
 		}
-		
-		
 	}
 
 	private void OnPlaying()
@@ -56,7 +50,6 @@ public partial class Main : Node
 		r.ScreenSize = this.ScreenSize;
 		r.Start((Vector2)position,(Vector2)velocity,size);
 		CallDeferred(new StringName("add_child"), r);
-
 	}
 
 	private void OnRockExploded(float size, float radius, Vector2 position, Vector2 linearvelocity)
@@ -103,7 +96,6 @@ public partial class Main : Node
 		GetNode<Player>("Player").Reset();
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 		if (!isPlaying)
@@ -126,6 +118,26 @@ public partial class Main : Node
 	private void UpdateLives(int value)
 	{
 		// Replace with function body.
+	}
+
+	public override void _Input(InputEvent @event)
+	{
+		//base._Input(@event);
+		if (@event.IsActionPressed("pause"))
+		{
+			GetTree().Paused = !GetTree().Paused;
+			var message = GetNode<Label>("HUD/VBoxContainer/Message");
+			if (GetTree().Paused)
+			{
+				message.Text = "Paused";
+				message.Show();
+			}
+			else
+			{
+				message.Text = "";
+				message.Hide();
+			}
+		}
 	}
 }
 
