@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using space_rock.Player;
 
 public partial class Enemy : Area2D
 {
@@ -13,7 +14,7 @@ public partial class Enemy : Area2D
 	[Export] public int Health = 3;
 
 	private PathFollow2D _follow = new();
-	private object _target = null;
+	public Player Target { get; set; } = null;
 	
 	
 	public override void _Ready()
@@ -34,7 +35,13 @@ public partial class Enemy : Area2D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		
+		Rotation += Mathf.DegToRad(RotationSpeed) * (float)delta;
+		_follow.Progress += Speed * (float)delta;
+		Position = _follow.GlobalPosition;
+		if (this._follow.ProgressRatio >= 1)
+		{
+			QueueFree();
+		}
 	}
 
 	private void _on_gun_colldown_timeout()

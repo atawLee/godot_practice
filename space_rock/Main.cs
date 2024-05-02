@@ -7,6 +7,9 @@ public partial class Main : Node
 {
 	[Export]
 	public PackedScene RockScene { get; set; }
+	
+	[Export]
+	public PackedScene EnemyScene { get; set; }
 
 	public Vector2 ScreenSize { get; set; } = Vector2.Zero;
 
@@ -80,6 +83,8 @@ public partial class Main : Node
 		{
 			SpawnRock(3);
 		}
+		
+		GetNode<Timer>("EnemyTimer").Start(GD.RandRange(5,10));
 	}
 
 	public void NewGame()
@@ -139,9 +144,12 @@ public partial class Main : Node
 			}
 		}
 	}
+	
+	private void _on_enemy_timer_timeout()
+	{
+		var e = EnemyScene.Instantiate() as Enemy;
+		AddChild(e);
+		e!.Target = GetNode<Player>("Player");
+		GetNode<Timer>("EnemyTimer").Start(GD.RandRange(20,40));
+	}
 }
-
-
-
-
-
