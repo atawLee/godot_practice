@@ -31,4 +31,7 @@ position = Vector2(16, 8)
 
 [node name="HUD" parent="." instance=ExtResource("5_yctsm")]
 
+[node name="EnemyTimer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="Start" from="HUD" to="." method="NewGame"]
