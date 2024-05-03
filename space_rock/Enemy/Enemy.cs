@@ -72,6 +72,32 @@ public partial class Enemy : Area2D
 			await Task.Delay(delay);
 		}
 	}
+
+	public void TakeDamage(int amount)
+	{
+		this.Health -= amount;
+		GetNode<AnimationPlayer>("AnimationPlayer").Play("flash");
+		if (Health <= 0)
+		{
+			Explode();
+		}
+	}
+
+	public async void Explode()
+	{
+		this.Speed = 0;
+		GetNode<Timer>("GunColldown").Stop();
+		GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled",true);
+		GetNode<Sprite2D>("Sprite2D").Hide();
+		GetNode<Sprite2D>("Explosion").Show();
+		
+		GetNode<AnimationPlayer>("Explosion/AnimationPlayer").Play("explosion");
+		await ToSignal(GetNode<AnimationPlayer>("Explosion/AnimationPlayer"), new StringName("animation_finished"));
+		QueueFree();
+
+	}
+	
+	
 }
 
 
