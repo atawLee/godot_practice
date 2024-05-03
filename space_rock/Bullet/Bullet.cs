@@ -16,7 +16,6 @@ public partial class Bullet : Area2D
 	{
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 		this.Position += Velocity * (float)delta;
@@ -36,5 +35,13 @@ public partial class Bullet : Area2D
 			QueueFree();
 		}
 	}
+	
+	private void _on_area_entered(Area2D area)
+	{
+		if (area.IsInGroup("enemies"))
+		{
+			var enemy = area as Enemy;
+			enemy!.TakeDamage(1);
+		}
+	}
 }
- 
