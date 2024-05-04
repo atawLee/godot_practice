@@ -5,9 +5,33 @@ using System.Diagnostics;
 namespace space_rock.Player;  
 public partial class Player : RigidBody2D
 {
+	[Signal]
+	public delegate void ShieldChangedEventHandler(float value);
+
+	[Export] public float MaxShield { get; set; } = 100f;
+	[Export] public float ShieldRegen { get; set; } = 5.0f;
+
+	private float _shield;
+
+	public float Shield
+	{
+		get => _shield;
+		set
+		{
+			var temp = Math.Min(value, this.MaxShield);
+			_shield = temp;
+			EmitSignal(SignalName.ShieldChanged, this.MaxShield);
+
+			if (_shield <= 0)
+			{
+				_lives -= 1;
+				Explode();
+			}
+		}
+	}
 	[Export] public int EnginePower { get; set; } = 500;
 	[Export] public int SpinPower { get; set; } = 500;
-	
+
 	public PlayerState CurrentState = PlayerState.Init;
 
 	[Export] public PackedScene BulletPackedScene { get; set; }
