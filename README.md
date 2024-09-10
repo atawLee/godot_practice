@@ -36,7 +36,7 @@ QueueFree(); //개체 삭제
 [Tween — Godot Engine (stable) documentation in English](https://docs.godotengine.org/en/stable/classes/class_tween.html)
 
 
-## 리지드 바디 물리학
+## 콜리전
 두 오브젝트가 교차하거나 접촉하는 시점을 파악해야하는 경우, 이를 **콜리전감지**라고 하며, 감지되었을 때 뭔가가 이러나기를 바라는 것을 **콜리전 반응**이라고 합니다.
 
 ## 물리바디 
