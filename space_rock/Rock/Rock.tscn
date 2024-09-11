@@ -4,11 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://du2tg3ivq4nrv" path="res://assets/rock.png" id="1_rft8y"]
 [ext_resource type="PackedScene" uid="uid://hje67viav6j1" path="res://Rock/Explosion.tscn" id="3_yjjru"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_02q83"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_nm34l"]
 bounce = 1.0
 
 [node name="Rock" type="RigidBody2D" groups=["rocks"]]
-physics_material_override = SubResource("PhysicsMaterial_02q83")
+physics_material_override = SubResource("PhysicsMaterial_nm34l")
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("1_jw35e")

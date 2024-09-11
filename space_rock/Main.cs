@@ -44,8 +44,7 @@ public partial class Main : Node
 
 		if (velocity == null)
 		{
-			velocity = Vector2.Right.Rotated((float)GD.RandRange(0,Math.Tau) *
-											 (float)125);
+			velocity = Vector2.Right.Rotated((float)GD.RandRange(0, (double)Mathf.Tau)) * GD.RandRange(50, 125);
 		}
 
 		var r = RockScene.Instantiate() as Rock;
